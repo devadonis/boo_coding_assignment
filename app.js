@@ -2,6 +2,7 @@
 
 const express = require('express');
 const connect = require('./config/mongoose');
+const routes = require('./routes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,7 +14,7 @@ connect()
 app.set('view engine', 'ejs');
 
 // routes
-app.use('/', require('./routes/profile')());
+app.use('/', routes);
 
 // start server
 const server = app.listen(port);

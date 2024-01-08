@@ -1,7 +1,8 @@
 'use strict';
 
-const express = require('express');
-const router = express.Router();
+const { Router } = require('express');
+const router = Router();
+const Profile = require('../models/profile');
 
 const profiles = [
   {
@@ -19,15 +20,47 @@ const profiles = [
   }
 ];
 
-module.exports = function () {
+/** Create profile */
+router.post('/', async (req, res, next) => {
+  try {
+    const { id, name } = req.body;
 
-  router.get('/*', function (req, res, next) {
-    // console.log(req.body)
+    // Check if the id is already in use
+    const existingProfileWithId = await Profile.findOne({ id });
+    if (existingProfileWithId) {
+      return res.status(400).json({ error: 'Profile with this ID already exists' });
+    }
+
+    // Check if the name is already in use
+    const existingProfileWithName = await Profile.findOne({ name });
+    if (existingProfileWithName) {
+      return res.status(400).json({ error: 'Profile with this Name already exists' });
+    }
+
+    // If both checks pass, create the new profile
+    const newProfile = await Profile.create(req.body);
+    res.status(201).json(newProfile);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+/** Read profile */
+router.get('/:id', async (req, res, next) => {
+  try {
+    const profile = await Profile.findOne({ id: req.params.id });
+    if (!profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
+
     res.render('profile_template', {
-      profile: profiles[0],
+      profile,
     });
-  });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
-  return router;
-}
-
+module.exports = router;

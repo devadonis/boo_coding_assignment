@@ -4,7 +4,6 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const connect = async () => {
   const mongod = await MongoMemoryServer.create();
   const uri = mongod.getUri()
-  console.log(uri)
 
   mongoose.connect(uri, { dbName: "boo" })
     .then(() => {
