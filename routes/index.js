@@ -1,5 +1,6 @@
 const express = require('express');
-const profileRouter = require('./profile');
+const profileRoute = require('./profile');
+const commentRoute = require('./comment');
 
 const router = express.Router()
 
@@ -12,6 +13,7 @@ router.use((err, req, res, next) => {
 
 router.use(express.json());
 
-router.use('/profile', profileRouter);
+router.use('/profile', profileRoute);
+router.use('/comment', commentRoute);
 
 module.exports = router;

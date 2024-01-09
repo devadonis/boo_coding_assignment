@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema
 
-const profileSchema = new mongoose.Schema({
+const profileSchema = new Schema({
   id: {
     type: Number,
     required: true
@@ -37,6 +38,12 @@ const profileSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
+    }
+  ]
 });
 
 const Profile = mongoose.model('Profile', profileSchema);
