@@ -2,17 +2,18 @@ const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const connect = async () => {
-  const mongod = await MongoMemoryServer.create();
-  const uri = mongod.getUri()
+  try {
+    const mongod = await MongoMemoryServer.create();
+    const URI = mongod.getUri();
 
-  mongoose.connect(uri, { dbName: "boo" })
-    .then(() => {
-      console.log("MongoDB connected successfully")
-    })
-    .catch((error) => {
-      console.error(`MongoDB connection failed: ${error.message}`);
-      throw new Error(error.message);
-    });
+    const mongooseConnection = await mongoose.connect(URI, { dbName: "boo" });
+    console.log('MongoDB connected successfully');
+
+    return mongooseConnection;
+  } catch (error) {
+    console.error(`MongoDB connection failed: ${error.message}`);
+    throw new Error(error.message);
+  }
 }
 
-module.exports = connect
+module.exports = connect;

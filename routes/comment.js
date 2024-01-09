@@ -18,9 +18,11 @@ router.post('/:profile_id', async (req, res, next) => {
       return res.status(404).json({ message: 'Profile not found' });
     }
 
+    // In real project, the commentorId should replace to the req.user.id
+    const commentorId = new mongoose.Types.ObjectId(req.body.commentorId);
     // Create a new comment
     const newComment = new Comment({
-      profile: profile._id,
+      commentor: commentorId,
       description,
       mbti,
       enneagram,
@@ -54,7 +56,7 @@ router.put('/like/:comment_id', async (req, res, next) => {
     comment.likes.unshift(fanId);
     await comment.save();
 
-    return res.status(201).json(comment.likes);
+    return res.status(200).json(comment.likes);
   } catch (error) {
     console.error(error.message);
     next(error);
@@ -75,7 +77,7 @@ router.put('/unlike/:comment_id', async (req, res, next) => {
     comment.likes = comment.likes.filter(like => like.toString() !== fanId);
     await comment.save();
 
-    return res.status(201).json(comment.likes);
+    return res.status(200).json(comment.likes);
   } catch (error) {
     console.error(error.message);
     next(error);

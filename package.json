@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +15,11 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "mongodb-memory-server": "^9.1.4",
-    "mongoose": "^8.0.3",
-    "nodemon": "^3.0.2"
+    "mongoose": "^8.0.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^6.3.3"
   }
 }
